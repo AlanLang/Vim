@@ -76,6 +76,8 @@ export enum ErrorCode {
   ValueIsLocked = 741,
   UsingAListAsANumber = 745,
   NoPreviouslyUsedRegister = 748,
+  LeapNoPreviousSearch = 800,
+  LeapNoFoundSearchString = 801,
   CannotUseModuloWithFloat = 804,
   UsingAFloatAsANumber = 805,
   UsingFloatAsAString = 806,
@@ -452,6 +454,15 @@ export class VimError extends Error {
   }
   static ListRequiredForArgument(idx: number): VimError {
     return new VimError(ErrorCode.ListRequiredForArgument, `List required for argument ${idx}`);
+  }
+  static LeapNoPreviousSearch(): VimError {
+    return new VimError(ErrorCode.LeapNoPreviousSearch, 'No previous search');
+  }
+  static LeapNoFoundSearchString(searchString?: string): VimError {
+    return new VimError(
+      ErrorCode.LeapNoFoundSearchString,
+      searchString ? `Not found: ${searchString}` : 'Not found',
+    );
   }
 }
 

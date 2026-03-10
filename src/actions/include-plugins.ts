@@ -6,3 +6,4 @@ import './plugins/replaceWithRegister';
 import './plugins/sneak';
 import './plugins/surround';
 import './plugins/targets/targets';
+import './plugins/leap/register';

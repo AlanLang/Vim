@@ -4,6 +4,7 @@ import { VimError } from './error';
 import { Mode } from './mode/mode';
 import { VimState } from './state/vimState';
 import { Logger } from './util/logger';
+import { getLeapInstance } from './actions/plugins/leap/leap';
 
 class StatusBarImpl implements vscode.Disposable {
   // Displays the current state (mode, recording macro, etc.) and messages to the user
@@ -188,6 +189,10 @@ export function statusBarText(vimState: VimState) {
       return '-- EASYMOTION --';
     case Mode.EasyMotionInputMode:
       return '-- EASYMOTION INPUT --';
+    case Mode.LeapMode:
+      return '-- LEAP --';
+    case Mode.LeapPrepareMode:
+      return '-- LEAP PREPARE --';
     case Mode.SurroundInputMode:
       return '-- SURROUND INPUT --';
     case Mode.Disabled:
@@ -255,6 +260,15 @@ export function statusBarCommandText(vimState: VimState): string {
     case Mode.Insert:
     case Mode.Replace:
       return vimState.recordedState.pendingCommandString;
+    case Mode.LeapPrepareMode:
+    case Mode.LeapMode:
+      const leap = getLeapInstance();
+      if (leap.isRepeatLastSearch) {
+        const searchString =
+          leap.firstSearchString + leap.leapAction!.keysPressed[0];
+        return 's' + searchString;
+      }
+      return vimState.recordedState.commandString;
     case Mode.Normal:
     case Mode.Disabled:
       return vimState.recordedState.commandString;
