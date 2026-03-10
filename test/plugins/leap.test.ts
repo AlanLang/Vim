@@ -1,5 +1,18 @@
+import { ILeapConfiguration } from '../../src/configuration/iconfiguration';
 import { newTest } from '../testSimplifier';
 import { cleanUpWorkspace, setupWorkspace } from '../testUtils';
+
+const defaultLeapConfig: ILeapConfiguration = {
+  enable: true,
+  showMarkerPosition: 'after',
+  labels: 'sklyuiopnm,qwertzxcvbahdgjf;',
+  caseSensitive: false,
+  bidirectionalSearch: false,
+  marker: {
+    backgroundColors: ['#ccff88', '#99ccff'],
+    charColor: '#000000',
+  },
+};
 
 function leapCommand(key: 's' | 'S', searchStrings: string[], jumpKeys: string[] = []) {
   return [key, ...searchStrings, ...jumpKeys].join('');
@@ -8,7 +21,7 @@ function leapCommand(key: 's' | 'S', searchStrings: string[], jumpKeys: string[]
 suite('leap plugin', () => {
   suite('normal mode', () => {
     setup(async () => {
-      await setupWorkspace({ config: { leap: { enable: true } } });
+      await setupWorkspace({ config: { leap: defaultLeapConfig } });
     });
 
     teardown(cleanUpWorkspace);
@@ -221,7 +234,7 @@ suite('leap plugin', () => {
 
   suite('bidirectional search mode', () => {
     setup(async () => {
-      await setupWorkspace({ config: { leap: { enable: true, bidirectionalSearch: true } } });
+      await setupWorkspace({ config: { leap: { ...defaultLeapConfig, bidirectionalSearch: true } } });
     });
 
     teardown(cleanUpWorkspace);
@@ -293,7 +306,7 @@ suite('leap plugin', () => {
 
   suite('caseSensitive', () => {
     setup(async () => {
-      await setupWorkspace({ config: { leap: { enable: true, caseSensitive: true } } });
+      await setupWorkspace({ config: { leap: { ...defaultLeapConfig, caseSensitive: true } } });
     });
 
     teardown(cleanUpWorkspace);
